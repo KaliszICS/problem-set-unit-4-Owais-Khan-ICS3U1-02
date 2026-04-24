@@ -1,9 +1,12 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class ProblemSet {
 
 	public static void main(String args[]) {
 		Scanner input = new Scanner(System.in);
+		Random random = new Random();
+
 		System.out.print("Welcome to the High Low Guessing Game.\n\nInput a number of rounds to play: ");
 		
 		while (!input.hasNextInt()) {
@@ -14,52 +17,94 @@ public class ProblemSet {
 
 		input.nextLine();
 
-		String min;
-		String max;
+		String min = "";
+		String max = "";
 
 		String range;
+		boolean valid = true;
 		do {
-			System.out.println("What Range would you like to play between (#-#)?\n");
+			if (!valid) {
+				System.out.println("Invalid Input!");
+			}
+			System.out.println("What Range would you like to play between (#-#)?");
 			range = input.nextLine();
-			int seperator = range.substring(1).indexOf("-");
-			min = range.substring(0, seperator);
-			max = range.substring(seperator+1);
 
-		} while (!(validateNumbers(min, max)));
+			if (!range.substring(1).contains("-") || range.length() < 3) {
+				valid = false;
+			} else {
+				int seperator = range.substring(1).indexOf("-")+1;
+				min = range.substring(0, seperator);
+				max = range.substring(seperator+1);
+				valid = true;
+			}
 
-		int score = 0;
-		
+		} while (!valid);
+
 		int rangeStart = Integer.parseInt(min);
 		int rangeEnd = Integer.parseInt(max);
 
 		double even = (rangeStart + rangeEnd)/2.0;
-		int lowStart; 
+		int size = rangeEnd - rangeStart + 1;
+		int lowEnd; 
 		int highStart;
 		String evenPrompt;
 
-		lowStart = (int)even-1;
-		if (even%2!=0) {
+		lowEnd = (int)even-1;
+		if (size%2==0) {
 			highStart = (int)even+2;
-			evenPrompt = "3. Even (" + (lowStart+1) + " and " + (lowStart+2) + ")";
+			evenPrompt = "3. Even (" + ((int)Math.floor(even)) + " and " + ((int)Math.ceil(even)) + ")";
 		} else {
 			highStart = (int)even+1;
-			evenPrompt = "3. Even (" + (lowStart+1) +")";
+			evenPrompt = "3. Even (" + ((int)even) +")";
 		}
+
+		int score = 0;
 
 		for (int i = 1; i <= rounds; i++) {
 			System.out.println("Round " + i + ":\n");
-		    System.out.println("Please select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n1. Low (" + rangeStart + " to " + lowStart + ")\n" + evenPrompt);
+		    System.out.println("Please select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n2. Low (" + rangeStart + " to " + lowEnd + ")\n" + evenPrompt + "\n");
+			while (!input.hasNextInt()) {
+				input.nextLine();
+				System.out.print("Invalid Input!\nPlease select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n2. Low (" + rangeStart + " to " + lowEnd + ")\n" + evenPrompt + "\n");
+			}
+			int option = input.nextInt(); 
+			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
+			
+			boolean highCorrect = option == 1 && numberToGuess > Math.ceil(even);
+			boolean lowCorrect = option == 2 && numberToGuess < Math.floor(even);
+			boolean evenCorrect = option == 3 && numberToGuess == Math.ceil(even) 
+										      || numberToGuess == Math.floor(even);
+
+			if (highCorrect || lowCorrect || evenCorrect) {
+				score++;
+				System.out.println("\nThe number was " + numberToGuess +".  You were correct.\nCurrent Score: " + score + "\n");
+			} else {
+				System.out.println("\nThe number was " + numberToGuess +".  You were incorrect.\nCurrent Score: " + score + "\n");
+			}
 		}
+
+		System.out.println("Total score: " + score);
+		if (score >= rounds/2.0) {
+			System.out.println("Congratulations you got " + score + " out of " + rounds + " rounds right!");
+		} else {
+			System.out.println("You got " + score + " out of " + rounds + " correct.  Better Luck next time.");
+		}
+
 		
 	}
 
+	public static boolean validateOption(int input, int minVal, int maxVal) {
+		return true;
+	}
+
 	public static boolean validateNumbers(String num1, String num2) {
-		num1 = num1.substring(1);
-		num2 = num2.substring(1);
-		return validateNumber(num1) & validateNumber(num2) & (num1.compareTo(num2) < 0);
+		return validateNumber(num1) & validateNumber(num2) & (num2.compareTo(num1) < 2);
 	}
 
 	public static boolean validateNumber(String num) {
+		if (num.startsWith("-")) {
+			num = num.substring(1);
+		}
 
 		for (int i = 0; i < num.length(); i++) {
 			int asciiVal = (int)num.charAt(i);
