@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class ProblemSet {
@@ -13,42 +12,63 @@ public class ProblemSet {
 		}
 		int rounds = input.nextInt();
 
-		System.out.println("What Range would you like to play between (#-#)?\n");
-		String range = input.nextLine();
+		input.nextLine();
+
+		String min;
+		String max;
+
+		String range;
+		do {
+			System.out.println("What Range would you like to play between (#-#)?\n");
+			range = input.nextLine();
+			int seperator = range.substring(1).indexOf("-");
+			min = range.substring(0, seperator);
+			max = range.substring(seperator+1);
+
+		} while (!(validateNumbers(min, max)));
 
 		int score = 0;
 		
-		int even = (rangeStart + rangeEnd)/2;
+		int rangeStart = Integer.parseInt(min);
+		int rangeEnd = Integer.parseInt(max);
+
+		double even = (rangeStart + rangeEnd)/2.0;
 		int lowStart; 
 		int highStart;
+		String evenPrompt;
 
-		if (even%2==0) {
-			lowStart = even;
+		lowStart = (int)even-1;
+		if (even%2!=0) {
+			highStart = (int)even+2;
+			evenPrompt = "3. Even (" + (lowStart+1) + " and " + (lowStart+2) + ")";
 		} else {
-			lowStart = even-1;
+			highStart = (int)even+1;
+			evenPrompt = "3. Even (" + (lowStart+1) +")";
 		}
-		highStart = even+1;
 
-		for (int i = 0; i < rounds; i++) {
-			round(i, a, b);
+		for (int i = 1; i <= rounds; i++) {
+			System.out.println("Round " + i + ":\n");
+		    System.out.println("Please select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n1. Low (" + rangeStart + " to " + lowStart + ")\n" + evenPrompt);
 		}
 		
 	}
 
-	public static boolean validRange(String range) {
-		seperator = range.substring(1, range.length()-1).indexOf(range)
+	public static boolean validateNumbers(String num1, String num2) {
+		num1 = num1.substring(1);
+		num2 = num2.substring(1);
+		return validateNumber(num1) & validateNumber(num2) & (num1.compareTo(num2) < 0);
+	}
+
+	public static boolean validateNumber(String num) {
+
+		for (int i = 0; i < num.length(); i++) {
+			int asciiVal = (int)num.charAt(i);
+			if ((asciiVal < 48 || asciiVal > 57)) {
+				return false;
+			}
+		}
 
 		return true;
-	}
-
-
-	public static String round(int roundNum) {
-		
-		System.out.println("Round " + roundNum + ":\n");
-
-		System.out.println("Please select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n1. High (" + lowStart + " to " + rangeStart + ")");
-
-
 	}
 
 }
