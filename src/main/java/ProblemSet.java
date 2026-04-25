@@ -2,9 +2,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ProblemSet {
+	static Scanner input = new Scanner(System.in);
 
 	public static void main(String args[]) {
-		Scanner input = new Scanner(System.in);
 		Random random = new Random();
 
 		System.out.print("Welcome to the High Low Guessing Game.\n\nInput a number of rounds to play: ");
@@ -26,6 +26,7 @@ public class ProblemSet {
 			if (!valid) {
 				System.out.println("Invalid Input!");
 			}
+
 			System.out.println("What Range would you like to play between (#-#)?");
 			range = input.nextLine();
 
@@ -35,7 +36,7 @@ public class ProblemSet {
 				int seperator = range.substring(1).indexOf("-")+1;
 				min = range.substring(0, seperator);
 				max = range.substring(seperator+1);
-				valid = true;
+				valid = validateNumbers(min, max);
 			}
 
 		} while (!valid);
@@ -90,25 +91,66 @@ public class ProblemSet {
 			System.out.println("You got " + score + " out of " + rounds + " correct.  Better Luck next time.");
 		}
 
-		
 	}
 
-	public static boolean validateOption(int input, int minVal, int maxVal) {
+	public static boolean parseRange(String range) {
+		System.out.println("What Range would you like to play between (#-#)?");
+		range = input.nextLine();
+
+		if (!range.substring(1).contains("-") || range.length() < 3) {
+			return false;
+		} else {
+			int seperator = range.substring(1).indexOf("-")+1;
+			min = range.substring(0, seperator);
+			max = range.substring(seperator+1);
+			return validateNumbers(min, max);
+		}
+	} 
+
+	public static boolean validateRounds(Scanner input) {
+		if (!input.hasNextInt()) {
+			return false;
+		}
+
+		int num = input.nextInt();
+		input.nextLine();
+
+		if (!(num >= 1 && num <= 3)) {
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean validateOption(Scanner input, int minVal, int maxVal) {
+		if (!input.hasNextInt()) {
+			return false;
+		}
+
+		int num = input.nextInt();
+		input.nextLine();
+
+		if (!(num >= 1 && num <= 3)) {
+			return false;
+		}
 		return true;
 	}
 
 	public static boolean validateNumbers(String num1, String num2) {
-		return validateNumber(num1) & validateNumber(num2) & (num2.compareTo(num1) < 2);
+		return isInteger(num1) & isInteger(num2) 
+									& (num2.compareTo(num1) < 2);
 	}
 
-	public static boolean validateNumber(String num) {
+	public static boolean isInteger(String num) {
+		//if (num == null || num.length() == 0) return false;
+
 		if (num.startsWith("-")) {
+			if (num.length() == 1) return false;
 			num = num.substring(1);
 		}
 
 		for (int i = 0; i < num.length(); i++) {
-			int asciiVal = (int)num.charAt(i);
-			if ((asciiVal < 48 || asciiVal > 57)) {
+			char c = num.charAt(i);
+			if (c < '0' || c > '9') {
 				return false;
 			}
 		}
