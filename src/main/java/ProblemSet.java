@@ -3,46 +3,23 @@ import java.util.Scanner;
 
 public class ProblemSet {
 	static Scanner input = new Scanner(System.in);
+	static int rangeStart;
+	static int rangeEnd;
 
 	public static void main(String args[]) {
 		Random random = new Random();
 
 		System.out.print("Welcome to the High Low Guessing Game.\n\nInput a number of rounds to play: ");
 		
-		while (!input.hasNextInt()) {
-			input.nextLine();
+		while (validRounds(input) == -1) {
 			System.out.print("Invalid Input!\nInput a number of rounds to play: ");
 		}
 		int rounds = input.nextInt();
-
 		input.nextLine();
 
-		String min = "";
-		String max = "";
-
-		String range;
-		boolean valid = true;
-		do {
-			if (!valid) {
-				System.out.println("Invalid Input!");
-			}
-
-			System.out.println("What Range would you like to play between (#-#)?");
-			range = input.nextLine();
-
-			if (!range.substring(1).contains("-") || range.length() < 3) {
-				valid = false;
-			} else {
-				int seperator = range.substring(1).indexOf("-")+1;
-				min = range.substring(0, seperator);
-				max = range.substring(seperator+1);
-				valid = validateNumbers(min, max);
-			}
-
-		} while (!valid);
-
-		int rangeStart = Integer.parseInt(min);
-		int rangeEnd = Integer.parseInt(max);
+		while (!parseRange()) {
+			System.out.println("Invalid Input!");
+		}
 
 		double even = (rangeStart + rangeEnd)/2.0;
 		int size = rangeEnd - rangeStart + 1;
@@ -62,10 +39,10 @@ public class ProblemSet {
 		int score = 0;
 
 		for (int i = 1; i <= rounds; i++) {
+
 			System.out.println("Round " + i + ":\n");
 		    System.out.println("Please select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n2. Low (" + rangeStart + " to " + lowEnd + ")\n" + evenPrompt + "\n");
-			while (!input.hasNextInt()) {
-				input.nextLine();
+			while (!validOption(input)) {
 				System.out.print("Invalid Input!\nPlease select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n2. Low (" + rangeStart + " to " + lowEnd + ")\n" + evenPrompt + "\n");
 			}
 			int option = input.nextInt(); 
@@ -93,9 +70,12 @@ public class ProblemSet {
 
 	}
 
-	public static boolean parseRange(String range) {
+	public static boolean parseRange() {
+		String min;
+		String max;
+
 		System.out.println("What Range would you like to play between (#-#)?");
-		range = input.nextLine();
+		String range = input.nextLine();
 
 		if (!range.substring(1).contains("-") || range.length() < 3) {
 			return false;
@@ -103,12 +83,33 @@ public class ProblemSet {
 			int seperator = range.substring(1).indexOf("-")+1;
 			min = range.substring(0, seperator);
 			max = range.substring(seperator+1);
-			return validateNumbers(min, max);
 		}
+		if (isInteger(max) && isInteger(min)) {
+			rangeStart = Integer.parseInt(min);
+			rangeEnd = Integer.parseInt(max);
+			return rangeEnd > rangeStart+1;
+		}
+		return false;
 	} 
 
-	public static boolean validateRounds(Scanner input) {
+	public static int validRounds(Scanner input) {
 		if (!input.hasNextInt()) {
+			input.nextLine();
+			return -1;
+		}
+
+		int num = input.nextInt();
+		input.nextLine();
+
+		if (!(num >= 1)) {
+			return -1;
+		}
+		return num;
+	}
+
+	public static boolean validOption(Scanner input) {
+		if (!input.hasNextInt()) {
+			input.nextLine();
 			return false;
 		}
 
@@ -119,25 +120,6 @@ public class ProblemSet {
 			return false;
 		}
 		return true;
-	}
-
-	public static boolean validateOption(Scanner input, int minVal, int maxVal) {
-		if (!input.hasNextInt()) {
-			return false;
-		}
-
-		int num = input.nextInt();
-		input.nextLine();
-
-		if (!(num >= 1 && num <= 3)) {
-			return false;
-		}
-		return true;
-	}
-
-	public static boolean validateNumbers(String num1, String num2) {
-		return isInteger(num1) & isInteger(num2) 
-									& (num2.compareTo(num1) < 2);
 	}
 
 	public static boolean isInteger(String num) {
