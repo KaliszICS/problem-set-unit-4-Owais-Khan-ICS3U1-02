@@ -42,8 +42,7 @@ public class ProblemSet {
 
 		lowEnd = (int) even - 1; // The lower half should end at 1 less than even
 
-		// Determine the beginning of the upper half depending on whether there are 1 or
-		// 2 middle numbers.
+		// Determine the beginning of the upper half depending on the amount of middle numbers.
 		if (size % 2 == 0) {
 			// 2 middle numbers
 			highStart = (int) even + 2;
@@ -54,24 +53,23 @@ public class ProblemSet {
 			evenPrompt = "3. Even (" + ((int) even) + ")";
 		}
 
+		// Store menu for cleaner printing.
+		String menu = "Please select High, Low or Even:\n"
+					+ "1. High (" + highStart + " to " + rangeEnd + ")\n"
+					+ "2. Low (" + rangeStart + " to " + lowEnd + ")\n"
+					+ evenPrompt + "\n";
+
 		int score = 0;
 
 		for (int i = 1; i <= rounds; i++) {
 
 			// Menu.
 			System.out.println("Round " + i + ":\n");
-			System.out.println("Please select High, Low or Even:\n"
-					+ "1. High (" + highStart + " to " + rangeEnd + ")\n"
-					+ "2. Low (" + rangeStart + " to " + lowEnd + ")\n"
-					+ evenPrompt + "\n");
+			System.out.println(menu);
 
 			// Keep asking for an option untill it is between 1-3.
 			while (!validOption(input)) {
-				System.out.print("Invalid Input!\n"
-						+ "Please select High, Low or Even:\n"
-						+ "1. High (" + highStart + " to " + rangeEnd + ")\n"
-						+ "2. Low (" + rangeStart + " to " + lowEnd + ")\n"
-						+ evenPrompt + "\n");
+				System.out.print(menu);
 			}
 			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
 
@@ -80,16 +78,19 @@ public class ProblemSet {
 			boolean evenCorrect = option == 3 && numberToGuess == Math.ceil(even)
 					|| numberToGuess == Math.floor(even);
 
+			String result;
+
 			if (highCorrect || lowCorrect || evenCorrect) {
 				score++;
-				System.out.println(
-						"\nThe number was " + numberToGuess + ".  You were correct.\n"
-								+ "Current Score: " + score + "\n");
+				result = "correct";
 			} else {
-				System.out.println(
-						"\nThe number was " + numberToGuess + ".  You were incorrect.\n"
-								+ "Current Score: " + score + "\n");
+				result = "incorrect";
 			}
+
+			// Correct or incorrect message.
+			System.out.println("\nThe number was " + numberToGuess + ".  You were " + result + ".\n"
+							   + "Current Score: " + score + "\n");
+
 		}
 
 		// Final message after all rounds are done.
@@ -137,7 +138,7 @@ public class ProblemSet {
 		rounds = input.nextInt();
 		input.nextLine();
 
-		if (!(rounds >= 1)) {
+		if (rounds < 1) {
 			return false;
 		}
 		return true;
@@ -152,7 +153,7 @@ public class ProblemSet {
 		option = input.nextInt();
 		input.nextLine();
 
-		if (!(option >= 1 && option <= 3)) {
+		if (option < 1 || option > 3) {
 			return false;
 		}
 		return true;
