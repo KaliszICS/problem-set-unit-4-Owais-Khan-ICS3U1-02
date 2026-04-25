@@ -5,17 +5,17 @@ public class ProblemSet {
 	static Scanner input = new Scanner(System.in);
 	static int rangeStart;
 	static int rangeEnd;
+	static int rounds;
+	static int option;
 
 	public static void main(String args[]) {
 		Random random = new Random();
 
 		System.out.print("Welcome to the High Low Guessing Game.\n\nInput a number of rounds to play: ");
 		
-		while (validRounds(input) == -1) {
+		while (!validRounds(input)) {
 			System.out.print("Invalid Input!\nInput a number of rounds to play: ");
 		}
-		int rounds = input.nextInt();
-		input.nextLine();
 
 		while (!parseRange()) {
 			System.out.println("Invalid Input!");
@@ -45,7 +45,6 @@ public class ProblemSet {
 			while (!validOption(input)) {
 				System.out.print("Invalid Input!\nPlease select High, Low or Even:\n1. High (" + highStart + " to " + rangeEnd + ")\n2. Low (" + rangeStart + " to " + lowEnd + ")\n" + evenPrompt + "\n");
 			}
-			int option = input.nextInt(); 
 			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
 			
 			boolean highCorrect = option == 1 && numberToGuess > Math.ceil(even);
@@ -77,7 +76,7 @@ public class ProblemSet {
 		System.out.println("What Range would you like to play between (#-#)?");
 		String range = input.nextLine();
 
-		if (!range.substring(1).contains("-") || range.length() < 3) {
+		if (!(range.length() >= 3 && range.substring(1).contains("-"))) {
 			return false;
 		} else {
 			int seperator = range.substring(1).indexOf("-")+1;
@@ -92,31 +91,31 @@ public class ProblemSet {
 		return false;
 	} 
 
-	public static int validRounds(Scanner input) {
+	public static boolean validRounds(Scanner input) {
 		if (!input.hasNextInt()) {
-			input.nextLine();
-			return -1;
+			input.next();
+			return false;
 		}
 
-		int num = input.nextInt();
+		rounds = input.nextInt();
 		input.nextLine();
 
-		if (!(num >= 1)) {
-			return -1;
+		if (!(rounds >= 1)) {
+			return false;
 		}
-		return num;
+		return true;
 	}
 
 	public static boolean validOption(Scanner input) {
 		if (!input.hasNextInt()) {
-			input.nextLine();
+			input.next();
 			return false;
 		}
 
-		int num = input.nextInt();
+		option = input.nextInt();
 		input.nextLine();
 
-		if (!(num >= 1 && num <= 3)) {
+		if (!(option >= 1 && option <= 3)) {
 			return false;
 		}
 		return true;
