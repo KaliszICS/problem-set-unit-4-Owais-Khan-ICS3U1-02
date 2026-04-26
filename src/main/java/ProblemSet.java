@@ -26,13 +26,13 @@ public class ProblemSet {
 		int rounds;
 		while (!(input.hasNextInt() && (rounds = input.nextInt()) > 0)) {
 			input.nextLine();
-			System.out.print("Invalid Input!\nInput a number of rounds to play: ");
+			System.out.print("\nInvalid Input!\nInput a number of rounds to play: ");
 		}
 		input.nextLine();
 
 		// Keep asking for range until it is valid.
 		while (!(parseRange())) {
-			System.out.println("Invalid Input!");
+			System.out.print("\nInvalid Input!");
 		}
 
 		double even = (rangeStart + rangeEnd) / 2.0;
@@ -73,7 +73,7 @@ public class ProblemSet {
 			int option;
 			while (!(input.hasNextInt() && (option = input.nextInt()) >= 1 && option <= 3 )) {
 				input.nextLine();
-				System.out.print(menu);
+				System.out.print("\nInvalid Input!\n" + menu);
 			}
 			input.nextLine();
 			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
