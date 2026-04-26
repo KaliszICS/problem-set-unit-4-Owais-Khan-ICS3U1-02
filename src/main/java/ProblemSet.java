@@ -94,12 +94,12 @@ public class ProblemSet {
 
 			// Correct or incorrect message.
 			System.out.println("\nThe number was " + numberToGuess + ".  You were " + result + ".\n"
-							   + "Current Score: " + score + "\n");
+							   + "Current Score: " + score);
 
 		}
 
 		// Final message after all rounds are done.
-		System.out.println("Total score: " + score);
+		System.out.println("\nTotal score: " + score);
 		if (score >= rounds / 2.0) {
 			System.out.println("Congratulations you got " + score + " out of " + rounds + " rounds right!");
 		} else {
