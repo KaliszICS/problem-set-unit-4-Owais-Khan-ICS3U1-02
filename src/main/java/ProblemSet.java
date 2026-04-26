@@ -15,8 +15,6 @@ public class ProblemSet {
 	static Scanner input = new Scanner(System.in);
 	static int rangeStart;
 	static int rangeEnd;
-	static int rounds;
-	static int option;
 
 	public static void main(String args[]) {
 		Random random = new Random();
@@ -24,13 +22,16 @@ public class ProblemSet {
 		System.out.print("Welcome to the High Low Guessing Game.\n"
 				+ "\nInput a number of rounds to play: ");
 
-		// Keep asking for rounds until it is atleast 1.
-		while (!validRounds(input)) {
+		// Keep asking for rounds until it is at least 1.
+		int rounds;
+		while (!(input.hasNextInt() && (rounds = input.nextInt()) > 0)) {
+			input.nextLine();
 			System.out.print("Invalid Input!\nInput a number of rounds to play: ");
 		}
+		input.nextLine();
 
 		// Keep asking for range until it is valid.
-		while (!parseRange()) {
+		while (!(parseRange())) {
 			System.out.println("Invalid Input!");
 		}
 
@@ -61,16 +62,20 @@ public class ProblemSet {
 
 		int score = 0;
 
+		// Repeat the game for as many rounds they said.
 		for (int i = 1; i <= rounds; i++) {
 
 			// Menu.
-			System.out.println("Round " + i + ":\n");
+			System.out.println("\nRound " + i + ":\n");
 			System.out.println(menu);
 
-			// Keep asking for an option untill it is between 1-3.
-			while (!validOption(input)) {
+			// If the option is an int, it will assign it to option and then use it to check if it is valid (1-3).
+			int option;
+			while (!(input.hasNextInt() && (option = input.nextInt()) >= 1 && option <= 3 )) {
+				input.nextLine();
 				System.out.print(menu);
 			}
+			input.nextLine();
 			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
 
 			boolean highCorrect = option == 1 && numberToGuess > Math.ceil(even);
@@ -106,7 +111,7 @@ public class ProblemSet {
 		String min;
 		String max;
 
-		System.out.println("What Range would you like to play between (#-#)?");
+		System.out.println("\nWhat Range would you like to play between (#-#)?");
 		String range = input.nextLine();
 
 		// Check if the range is atleast 3 characters (#-#) and if there is a "-"
@@ -127,36 +132,6 @@ public class ProblemSet {
 			return rangeEnd > rangeStart + 1; // Handle small ranges like 1-2.
 		}
 		return false;
-	}
-
-	public static boolean validRounds(Scanner input) {
-		if (!input.hasNextInt()) {
-			input.next(); // Clear scanner
-			return false;
-		}
-
-		rounds = input.nextInt();
-		input.nextLine();
-
-		if (rounds < 1) {
-			return false;
-		}
-		return true;
-	}
-
-	public static boolean validOption(Scanner input) {
-		if (!input.hasNextInt()) {
-			input.next();
-			return false;
-		}
-
-		option = input.nextInt();
-		input.nextLine();
-
-		if (option < 1 || option > 3) {
-			return false;
-		}
-		return true;
 	}
 
 	public static boolean isInteger(String num) {
