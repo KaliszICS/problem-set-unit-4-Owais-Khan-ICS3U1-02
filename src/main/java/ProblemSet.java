@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ProblemSet {
 
-	// resuable varaibles defined in functions
+	// Shared input scanner and range values (used across functions).
 	static Scanner input = new Scanner(System.in);
 	static int rangeStart;
 	static int rangeEnd;
@@ -22,7 +22,6 @@ public class ProblemSet {
 		System.out.print("Welcome to the High Low Guessing Game.\n"
 				+ "\nInput a number of rounds to play: ");
 
-		// Keep asking for rounds until it is at least 1.
 		int rounds;
 		while (!(input.hasNextInt() && (rounds = input.nextInt()) > 0)) {
 			input.nextLine();
@@ -30,36 +29,30 @@ public class ProblemSet {
 		}
 		input.nextLine();
 
-		// Keep asking for range until it is valid.
 		while (!(parseRange())) {
 			System.out.print("\nInvalid Input!");
 		}
 
-		// Calculate midpoint(s) to divide range into low, middle, and high sections
+		// Calculate midpoint(s) to divide range into low, middle, and high sections.
 		double midpoint = (rangeStart + rangeEnd) / 2.0;
 		int lowerMid = (int) Math.floor(midpoint);
 		int upperMid = (int) Math.ceil(midpoint);
-
 		int rangeSize = rangeEnd - rangeStart + 1; // Inclusive range size
+		int lowEnd = lowerMid - 1;
+		int highStart = upperMid + 1;
 		
-		int lowEnd;
-		int highStart;
+		// Determine the even prompt based on whether there are 1 or 2 middle numbers.
 		String evenPrompt;
-
-		// Define boundaries so the middle value(s) are excluded from high/low
-		lowEnd = lowerMid - 1;
-		highStart = upperMid + 1;
-
-		// Determine the even promp based on whether there are 1 or 2 middle numbers.
 		if (lowerMid != upperMid) {
 			evenPrompt = "3. Even (" + (lowerMid) + " and " + (upperMid) + ")";  // 2 middles
 		} else {
 			evenPrompt = "3. Even (" + (lowerMid) + ")";  // 1 middle
 		}
-		
+
 		String highPrompt = "1. High (" + highStart + " to " + rangeEnd + ")\n";
 		String lowPrompt = "2. Low (" + rangeStart + " to " + lowEnd + ")\n"; 
 
+		// For very small ranges, avoid showing misleading "ranges" for high/low.
 		if (rangeSize <= 4) {
 			highPrompt = "1. High (" + rangeEnd + ")\n";
 			lowPrompt = "2. Low (" + rangeStart + ")\n"; 
@@ -121,7 +114,7 @@ public class ProblemSet {
 		System.out.println("\nWhat Range would you like to play between (#-#)?");
 		String range = input.nextLine();
 
-		// Check if the range is atleast 3 characters (#-#) and if there is a "-"
+		// Check if the range is atleast 3 characters (#-#) and if there is a "-".
 		if (!(range.length() >= 3 && range.substring(1).contains("-"))) {
 			return false;
 		} else {
@@ -152,7 +145,6 @@ public class ProblemSet {
 			num = num.substring(1);
 		}
 
-		// Check if each character is a number.
 		for (int i = 0; i < num.length(); i++) {
 			char c = num.charAt(i);
 			if (c < '0' || c > '9') {
