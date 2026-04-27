@@ -47,7 +47,7 @@ public class ProblemSet {
 		highStart = upperMid + 1;
 
 		// Determine the beginning of the upper half depending on the amount of middle numbers.
-		if (rangeSize % 2 == 0) {
+		if (lowerMid != upperMid) {
 			// 2 middle numbers
 			evenPrompt = "3. Even (" + (lowerMid) + " and " + (upperMid) + ")";
 		} else {
@@ -55,11 +55,16 @@ public class ProblemSet {
 			evenPrompt = "3. Even (" + (lowerMid) + ")";
 		}
 
+		String highPrompt = "1. High (" + highStart + " to " + rangeEnd + ")\n";
+		String lowPrompt = "2. Low (" + rangeStart + " to " + lowEnd + ")\n"; 
+
+		if (rangeSize == 3) {
+			highPrompt = "1. High (" + rangeEnd + ")\n";
+			lowPrompt = "2. Low (" + rangeStart + ")\n"; 
+		}
+
 		// Store menu for cleaner printing.
-		String menu = "Please select High, Low or Even:\n"
-					+ "1. High (" + highStart + " to " + rangeEnd + ")\n"
-					+ "2. Low (" + rangeStart + " to " + lowEnd + ")\n"
-					+ evenPrompt + "\n";
+		String menu = "Please select High, Low or Even:\n" + highPrompt + lowPrompt + evenPrompt + "\n";
 
 		int score = 0;
 
@@ -96,7 +101,6 @@ public class ProblemSet {
 			// Correct or incorrect message.
 			System.out.println("\nThe number was " + randomNumber + ".  You were " + result + ".\n"
 							   + "Current Score: " + score);
-
 		}
 
 		// Final message after all rounds are done.
