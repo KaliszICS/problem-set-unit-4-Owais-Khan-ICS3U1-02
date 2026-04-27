@@ -35,23 +35,24 @@ public class ProblemSet {
 			System.out.print("\nInvalid Input!");
 		}
 
-		double even = (rangeStart + rangeEnd) / 2.0;
-		int size = rangeEnd - rangeStart + 1; // Add 1 to make it inclusive
+		double midpoint = (rangeStart + rangeEnd) / 2.0;
+		int lowerMid = (int) Math.floor(midpoint);
+		int upperMid = (int) Math.ceil(midpoint);
+		int rangeSize = rangeEnd - rangeStart + 1; // Inclusive range size
 		int lowEnd;
 		int highStart;
 		String evenPrompt;
 
-		lowEnd = (int) even - 1; // The lower half should end at 1 less than even
+		lowEnd = lowerMid - 1; // The lower half should end at 1 less than even
+		highStart = upperMid + 1;
 
 		// Determine the beginning of the upper half depending on the amount of middle numbers.
-		if (size % 2 == 0) {
+		if (rangeSize % 2 == 0) {
 			// 2 middle numbers
-			highStart = (int) even + 2;
-			evenPrompt = "3. Even (" + ((int) Math.floor(even)) + " and " + ((int) Math.ceil(even)) + ")";
+			evenPrompt = "3. Even (" + (lowerMid) + " and " + (upperMid) + ")";
 		} else {
 			// 1 middle number
-			highStart = (int) even + 1;
-			evenPrompt = "3. Even (" + ((int) even) + ")";
+			evenPrompt = "3. Even (" + (lowerMid) + ")";
 		}
 
 		// Store menu for cleaner printing.
@@ -70,18 +71,18 @@ public class ProblemSet {
 			System.out.println(menu);
 
 			// If the option is an int, it will assign it to option and then use it to check if it is valid (1-3).
-			int option;
-			while (!(input.hasNextInt() && (option = input.nextInt()) >= 1 && option <= 3 )) {
+			int userChoice;
+			while (!(input.hasNextInt() && (userChoice = input.nextInt()) >= 1 && userChoice <= 3 )) {
 				input.nextLine();
 				System.out.print("\nInvalid Input!\n" + menu);
 			}
 			input.nextLine();
-			int numberToGuess = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
+			int randomNumber = random.nextInt(rangeEnd - rangeStart + 1) + rangeStart;
 
-			boolean highCorrect = option == 1 && numberToGuess > Math.ceil(even);
-			boolean lowCorrect = option == 2 && numberToGuess < Math.floor(even);
-			boolean evenCorrect = option == 3 && numberToGuess == Math.ceil(even)
-					|| numberToGuess == Math.floor(even);
+			boolean highCorrect = userChoice == 1 && randomNumber > upperMid;
+			boolean lowCorrect = userChoice == 2 && randomNumber < lowerMid;
+			boolean evenCorrect = userChoice == 3 && (randomNumber == lowerMid
+					|| randomNumber == upperMid);
 
 			String result;
 
@@ -93,7 +94,7 @@ public class ProblemSet {
 			}
 
 			// Correct or incorrect message.
-			System.out.println("\nThe number was " + numberToGuess + ".  You were " + result + ".\n"
+			System.out.println("\nThe number was " + randomNumber + ".  You were " + result + ".\n"
 							   + "Current Score: " + score);
 
 		}
@@ -150,7 +151,6 @@ public class ProblemSet {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
