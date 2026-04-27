@@ -4,6 +4,10 @@
 	* Author: Owais Ali Khan
 	* Date Created: April 20, 2026
 	* Date Last Modified: April 27, 2026.
+
+	This is a game where the user selects High, Low, or Even to guess where a 
+	randomly generated number falls within a chosen range. The game runs for 
+	a specified number of rounds and tracks the user's score.
 	*/
 
 import java.util.Random;
