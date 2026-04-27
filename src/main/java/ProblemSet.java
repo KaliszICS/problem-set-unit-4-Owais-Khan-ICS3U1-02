@@ -121,9 +121,9 @@ public class ProblemSet {
 		} else {
 
 			// Parse the minimum and maximum using the index of "-"
-			int seperator = range.substring(1).indexOf("-") + 1;
-			min = range.substring(0, seperator);
-			max = range.substring(seperator + 1);
+			int separator = range.substring(1).indexOf("-") + 1;
+			min = range.substring(0, separator);
+			max = range.substring(separator + 1);
 		}
 
 		// Check if the min and max are numbers.
