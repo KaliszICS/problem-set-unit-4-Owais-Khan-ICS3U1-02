@@ -58,7 +58,7 @@ public class ProblemSet {
 		String highPrompt = "1. High (" + highStart + " to " + rangeEnd + ")\n";
 		String lowPrompt = "2. Low (" + rangeStart + " to " + lowEnd + ")\n"; 
 
-		if (rangeSize == 3) {
+		if (rangeSize <= 4) {
 			highPrompt = "1. High (" + rangeEnd + ")\n";
 			lowPrompt = "2. Low (" + rangeStart + ")\n"; 
 		}
