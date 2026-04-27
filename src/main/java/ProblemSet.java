@@ -35,26 +35,28 @@ public class ProblemSet {
 			System.out.print("\nInvalid Input!");
 		}
 
+		// Calculate midpoint(s) to divide range into low, middle, and high sections
 		double midpoint = (rangeStart + rangeEnd) / 2.0;
 		int lowerMid = (int) Math.floor(midpoint);
 		int upperMid = (int) Math.ceil(midpoint);
+
 		int rangeSize = rangeEnd - rangeStart + 1; // Inclusive range size
+		
 		int lowEnd;
 		int highStart;
 		String evenPrompt;
 
-		lowEnd = lowerMid - 1; // The lower half should end at 1 less than even
+		// Define boundaries so the middle value(s) are excluded from high/low
+		lowEnd = lowerMid - 1;
 		highStart = upperMid + 1;
 
-		// Determine the beginning of the upper half depending on the amount of middle numbers.
+		// Determine the even promp based on whether there are 1 or 2 middle numbers.
 		if (lowerMid != upperMid) {
-			// 2 middle numbers
-			evenPrompt = "3. Even (" + (lowerMid) + " and " + (upperMid) + ")";
+			evenPrompt = "3. Even (" + (lowerMid) + " and " + (upperMid) + ")";  // 2 middles
 		} else {
-			// 1 middle number
-			evenPrompt = "3. Even (" + (lowerMid) + ")";
+			evenPrompt = "3. Even (" + (lowerMid) + ")";  // 1 middle
 		}
-
+		
 		String highPrompt = "1. High (" + highStart + " to " + rangeEnd + ")\n";
 		String lowPrompt = "2. Low (" + rangeStart + " to " + lowEnd + ")\n"; 
 
@@ -75,7 +77,7 @@ public class ProblemSet {
 			System.out.println("\nRound " + i + ":\n");
 			System.out.println(menu);
 
-			// If the option is an int, it will assign it to option and then use it to check if it is valid (1-3).
+			// Check if the user choice is valid (1-3).
 			int userChoice;
 			while (!(input.hasNextInt() && (userChoice = input.nextInt()) >= 1 && userChoice <= 3 )) {
 				input.nextLine();
@@ -124,8 +126,10 @@ public class ProblemSet {
 			return false;
 		} else {
 
-			// Parse the minimum and maximum using the index of "-"
+			// Ignore the first "-" when finding the separator (handles negative numbers)
 			int separator = range.substring(1).indexOf("-") + 1;
+
+			// Parse the minimum and maximum using the index of "-".
 			min = range.substring(0, separator);
 			max = range.substring(separator + 1);
 		}
@@ -134,21 +138,21 @@ public class ProblemSet {
 		if (isInteger(max) && isInteger(min)) {
 			rangeStart = Integer.parseInt(min);
 			rangeEnd = Integer.parseInt(max);
-			return rangeEnd > rangeStart + 1; // Handle small ranges like 1-2.
+			return rangeEnd > rangeStart + 1; // Handle small ranges like 1-2
 		}
 		return false;
 	}
 
 	public static boolean isInteger(String num) {
 
-		// Account for negative numbers
+		// Account for negative numbers.
 		if (num.startsWith("-")) {
 			if (num.length() == 1)
 				return false;
 			num = num.substring(1);
 		}
 
-		// Check if each character is a number
+		// Check if each character is a number.
 		for (int i = 0; i < num.length(); i++) {
 			char c = num.charAt(i);
 			if (c < '0' || c > '9') {
