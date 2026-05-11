@@ -1,0 +1,8 @@
+K(30%): 100
+I(30%): 99
+C(10%): 100
+A(30%): 100
+99.7
+
+Great work Owais.
+Only suggestions would be to use functions a little bit more to break up your code into smaller pieces. (void functions for things like menus or isCorrect)

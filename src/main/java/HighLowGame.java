@@ -13,14 +13,15 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class ProblemSet {
+public class HighLowGame {
 
 	// Shared input scanner and range values (used across functions).
-	static Scanner input = new Scanner(System.in);
+	// static Scanner input = new Scanner(System.in);
 	static int rangeStart;
 	static int rangeEnd;
 
 	public static void main(String args[]) {
+		Scanner input = new Scanner(System.in);
 		Random random = new Random();
 
 		System.out.print("Welcome to the High Low Guessing Game.\n"
@@ -112,6 +113,7 @@ public class ProblemSet {
 	}
 
 	public static boolean parseRange() {
+		Scanner input = new Scanner(System.in);
 		String min;
 		String max;
 
